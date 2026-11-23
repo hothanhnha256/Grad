@@ -43,13 +43,13 @@ SITE_URL=https://<ten-mien>.vercel.app npm run links
 ## Sửa nội dung
 
 - Ngày giờ, địa điểm, SĐT, dòng bằng cấp: `lib/event.ts`
-- Bố cục và câu chữ: `components/Invitation.tsx`
+- Bố cục và câu chữ: `components/Invitation.tsx` (hero collage: `components/Hero.tsx`)
 - Màu sắc, font: `app/globals.css`
 - Vị trí ghim điểm hẹn trên bản đồ: `PIN` trong `components/CampusMap.tsx` (tính theo % ảnh `map/image.png`)
 
 ## Thay ảnh
 
-Bỏ ảnh gốc vào `photo/` (thư mục này không đưa lên git), sửa danh sách trong
+Bỏ ảnh gốc vào `photo/` (thư mục này không đưa lên git; cần cả `logohcmut.png` và `backgroundhcmut.png`), sửa danh sách trong
 `scripts/optimize_images.py` nếu đổi tên file, rồi chạy:
 
 ```bash

@@ -10,6 +10,9 @@ const budgets: Record<string, number> = {
   "hero-1600.webp": 350 * KB,
   "campus-map.webp": 400 * KB,
   "og.jpg": 200 * KB,
+  "hcmut-logo.webp": 30 * KB,
+  "hcmut-campus-1600.webp": 300 * KB,
+  "hcmut-campus-800.webp": 120 * KB,
 };
 for (let i = 1; i <= 5; i++) {
   budgets[`gallery-${i}-600.webp`] = 120 * KB;

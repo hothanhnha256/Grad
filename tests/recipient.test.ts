@@ -25,11 +25,14 @@ describe("resolveRecipient", () => {
   });
   it("decodes a URL-encoded name and applies honorific rules", () => {
     expect(resolveRecipient("anh", "Tu%E1%BA%A5n")).toEqual({
-      key: "anh", label: "Anh", name: "Tuấn", self: "em Nhã",
+      key: "anh", label: "Anh", name: "Tuấn", self: "em Nhã", you: "anh", invite: "Thân mời",
     });
   });
   it("normalizes a messy name", () => {
     expect(resolveRecipient("ban", "  th%E1%BB%8Bnh ")?.name).toBe("Thịnh");
+  });
+  it("keeps an already-decoded name containing %", () => {
+    expect(resolveRecipient("ban", "100%")?.name).toBe("100%");
   });
   it("does not throw on malformed percent-encoding", () => {
     expect(resolveRecipient("ban", "%E0%A4%A")?.name).toBe("");
@@ -44,14 +47,20 @@ describe("resolveRecipient", () => {
 });
 
 describe("greetingFor", () => {
-  it("greets with honorific only when no name", () => {
-    expect(greetingFor(resolveRecipient("thay"))).toEqual({ greeting: "Thân mời Thầy", self: "em" });
+  it("uses 'Kính mời' and respectful address for teachers", () => {
+    expect(greetingFor(resolveRecipient("thay"))).toEqual({ greeting: "Kính mời Thầy", self: "em", you: "Thầy" });
+    expect(greetingFor(resolveRecipient("co", "Lan")).greeting).toBe("Kính mời Cô Lan");
+  });
+  it("addresses older guests as anh/chị, not bạn", () => {
+    expect(greetingFor(resolveRecipient("anh", "Tuấn")).you).toBe("anh");
+    expect(greetingFor(resolveRecipient("chi")).you).toBe("chị");
+    expect(greetingFor(resolveRecipient("em")).you).toBe("em");
   });
   it("greets with honorific and name", () => {
     expect(greetingFor(resolveRecipient("ban", "Thịnh")).greeting).toBe("Thân mời Bạn Thịnh");
   });
   it("falls back to the default greeting", () => {
-    expect(greetingFor(null)).toEqual({ greeting: "Trân trọng kính mời bạn", self: "Nhã" });
+    expect(greetingFor(null)).toEqual({ greeting: "Trân trọng kính mời bạn", self: "Nhã", you: "bạn" });
   });
 });
 

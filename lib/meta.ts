@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EVENT } from "./event";
 import { greetingFor, type Recipient } from "./recipient";
+import { capitalize } from "./text";
 
 export const OG_IMAGE = {
   url: "/img/og.jpg",
@@ -13,6 +14,8 @@ export const OG_IMAGE = {
  *  openGraph object, so the preview image must be repeated here. */
 export function recipientMetadata(r: Recipient | null): Metadata {
   if (!r) return {};
-  const title = `${greetingFor(r).greeting} · Thiệp tốt nghiệp ${EVENT.name}`;
-  return { title, openGraph: { title, type: "website", locale: "vi_VN", images: [OG_IMAGE] } };
+  const { greeting, self, you } = greetingFor(r);
+  const title = `${greeting} · Thiệp tốt nghiệp ${EVENT.name}`;
+  const description = `${EVENT.dateLabel}, 12:00 tại ${EVENT.venue}. ${capitalize(self)} rất mong được gặp ${you}!`;
+  return { title, description, openGraph: { title, description, type: "website", locale: "vi_VN", images: [OG_IMAGE] } };
 }

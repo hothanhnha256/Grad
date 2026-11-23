@@ -54,6 +54,15 @@ def main() -> None:
         save_budget(resize_width(im, 1200), OUT / f"gallery-{i}-1200.webp", "WEBP", 400 * KB)
         save_budget(resize_width(im, 600), OUT / f"gallery-{i}-600.webp", "WEBP", 120 * KB)
 
+    # HCMUT logo keeps transparency; campus photo is the gate/hero backdrop.
+    logo = Image.open(SRC_PHOTOS / "logohcmut.png").convert("RGBA")
+    logo.thumbnail((240, 240), Image.LANCZOS)
+    logo.save(OUT / "hcmut-logo.webp", "WEBP", quality=90, method=6)
+    print(f"hcmut-logo.webp: {(OUT / 'hcmut-logo.webp').stat().st_size // KB} KB")
+    bg = load(SRC_PHOTOS / "backgroundhcmut.png")
+    save_budget(resize_width(bg, 1600), OUT / "hcmut-campus-1600.webp", "WEBP", 300 * KB)
+    save_budget(resize_width(bg, 800), OUT / "hcmut-campus-800.webp", "WEBP", 120 * KB)
+
     campus = Image.open(SRC_MAP).convert("RGB")
     save_budget(campus, OUT / "campus-map.webp", "WEBP", 400 * KB, quality=85)
 
