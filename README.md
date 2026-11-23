@@ -20,6 +20,8 @@ Có 3 kiểu link:
 | `/ban/thinh` | "Thân mời Bạn Thịnh" (tên có dấu lấy từ `lib/guests.ts`) |
 | `/anh/Tuấn` | "Thân mời Anh Tuấn" (tên lấy thẳng từ link, không cần khai báo) |
 | `/?x=chi&t=Lan` | "Thân mời Chị Lan" |
+| `/khanh-linh` | "Thân mời Khánh Linh" (khách không xưng hô, tên lấy từ `lib/guests.ts`) |
+| `/?t=Ngọc` | "Thân mời Ngọc" (không xưng hô, không cần khai báo) |
 
 Xưng hô hỗ trợ: `ban` (Bạn), `anh` (Anh), `chi` (Chị), `em` (Em), `thay` (Thầy), `co` (Cô).
 Thiệp tự đổi cách xưng: với Anh/Chị là "em Nhã", với Em là "anh Nhã", với Thầy/Cô là "em".
@@ -29,8 +31,8 @@ Danh sách khách có link đẹp (không dấu) nằm ở `lib/guests.ts`:
 
 ```ts
 export const GUESTS = {
-  "ban/thinh": "Thịnh",
-  "anh/tuan": "Tuấn",
+  "ban/thinh": "Thịnh",   // có xưng hô  → /ban/thinh
+  "khanh-linh": "Khánh Linh", // không xưng hô → /khanh-linh
 };
 ```
 

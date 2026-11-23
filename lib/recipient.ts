@@ -46,9 +46,17 @@ function findKey(raw: string): string | undefined {
   return k in HONORIFICS ? k : undefined;
 }
 
-/** Resolve a recipient from a URL path (/anh/tuan) or query (?x=anh&t=Tuấn). */
+/** A guest addressed by name only (no honorific): "Thân mời Khánh Linh". */
+function nameOnly(name: string): Recipient {
+  return { key: "", label: "", name, self: DEFAULT_GREETING.self, you: name, invite: "Thân mời" };
+}
+
+/** Resolve a recipient from a URL path (/anh/tuan) or query (?x=anh&t=Tuấn, or ?t=King). */
 export function resolveRecipient(rawKey?: string, rawName?: string): Recipient | null {
-  if (!rawKey) return null;
+  if (!rawKey) {
+    const name = rawName ? normalizeName(safeDecode(rawName)) : "";
+    return name ? nameOnly(name) : null;
+  }
   const key = findKey(rawKey);
   if (!key) return null;
   const { label, self, you, invite } = HONORIFICS[key];
@@ -58,7 +66,20 @@ export function resolveRecipient(rawKey?: string, rawName?: string): Recipient |
   return { key, label, name, self, you, invite };
 }
 
+/** Resolve a single path segment: a no-honorific guest (/khanh-linh) or an honorific alone (/thay). */
+export function resolveSegment(segment: string): Recipient | null {
+  const slug = slugify(safeDecode(segment));
+  if (GUESTS[slug]) return nameOnly(GUESTS[slug]);
+  if (slug in HONORIFICS) return resolveRecipient(slug);
+  return null;
+}
+
+/** "Bạn Thịnh", "Thầy", "Khánh Linh" — how the guest is named on the card. */
+export function guestName(r: Recipient): string {
+  return [r.label, r.name].filter(Boolean).join(" ");
+}
+
 export function greetingFor(r: Recipient | null): Greeting {
   if (!r) return DEFAULT_GREETING;
-  return { greeting: `${r.invite} ${r.label}${r.name ? ` ${r.name}` : ""}`, self: r.self, you: r.you };
+  return { greeting: `${r.invite} ${guestName(r)}`, self: r.self, you: r.you };
 }

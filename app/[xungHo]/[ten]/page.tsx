@@ -8,7 +8,9 @@ import { resolveRecipient } from "@/lib/recipient";
 type Props = { params: Promise<{ xungHo: string; ten: string }> };
 
 export function generateStaticParams() {
-  return Object.keys(GUESTS).map((path) => {
+  return Object.keys(GUESTS)
+    .filter((path) => path.includes("/"))
+    .map((path) => {
     const [xungHo, ten] = path.split("/");
     return { xungHo, ten };
   });

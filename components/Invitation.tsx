@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { EVENT } from "@/lib/event";
 import { buildCalendarUrl, buildDirectionsUrl, telUrl, zaloUrl } from "@/lib/invite";
-import { greetingFor, type Recipient } from "@/lib/recipient";
+import { greetingFor, guestName, type Recipient } from "@/lib/recipient";
 import { capitalize } from "@/lib/text";
 import { CampusMap } from "./CampusMap";
 import { Contact } from "./Contact";
@@ -22,7 +22,7 @@ export function Invitation({ recipient }: { recipient: Recipient | null }) {
   const { greeting, self, you } = greetingFor(recipient);
   const Self = capitalize(self);
   const zalo = zaloUrl(EVENT.phone);
-  const guest = recipient ? `${recipient.label}${recipient.name ? ` ${recipient.name}` : ""}` : "Khách quý";
+  const guest = recipient ? guestName(recipient) : "Khách quý";
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { HONORIFICS, slugify, normalizeName, resolveRecipient, greetingFor } from "@/lib/recipient";
+import { HONORIFICS, slugify, normalizeName, resolveRecipient, resolveSegment, greetingFor } from "@/lib/recipient";
 import { GUESTS, guestLinks } from "@/lib/guests";
 
 describe("slugify", () => {
@@ -39,10 +39,31 @@ describe("resolveRecipient", () => {
   });
   it("returns null for an unknown honorific", () => {
     expect(resolveRecipient("sep", "A")).toBeNull();
-    expect(resolveRecipient(undefined, "A")).toBeNull();
+    expect(resolveRecipient(undefined, undefined)).toBeNull();
+    expect(resolveRecipient(undefined, "   ")).toBeNull();
   });
   it("accepts the honorific label as well as the key", () => {
     expect(resolveRecipient("Thầy")?.key).toBe("thay");
+  });
+});
+
+describe("guests without an honorific", () => {
+  it("resolves a bare guest slug from the list", () => {
+    expect(resolveSegment("khanh-linh")).toEqual({
+      key: "", label: "", name: "Khánh Linh", self: "Nhã", you: "Khánh Linh", invite: "Thân mời",
+    });
+  });
+  it("greets and addresses them by name", () => {
+    expect(greetingFor(resolveSegment("king"))).toEqual({ greeting: "Thân mời King", self: "Nhã", you: "King" });
+  });
+  it("still treats a bare honorific segment as honorific-only", () => {
+    expect(greetingFor(resolveSegment("thay")).greeting).toBe("Kính mời Thầy");
+  });
+  it("returns null for an unknown single segment", () => {
+    expect(resolveSegment("khong-co-ai")).toBeNull();
+  });
+  it("supports ?t=Name without an honorific", () => {
+    expect(greetingFor(resolveRecipient(undefined, "%C3%81i%20My"))).toEqual({ greeting: "Thân mời Ái My", self: "Nhã", you: "Ái My" });
   });
 });
 
@@ -65,10 +86,15 @@ describe("greetingFor", () => {
 });
 
 describe("GUESTS", () => {
-  it("every entry has a valid honorific and a non-empty name", () => {
+  it("every entry is 'honorific/slug' or a bare slug, with a non-empty name", () => {
     for (const [path, name] of Object.entries(GUESTS)) {
-      const [key, slug] = path.split("/");
-      expect(HONORIFICS[key], path).toBeDefined();
+      const parts = path.split("/");
+      const slug = parts.at(-1)!;
+      if (parts.length === 2) expect(HONORIFICS[parts[0]], path).toBeDefined();
+      else {
+        expect(parts, path).toHaveLength(1);
+        expect(HONORIFICS[slug], `${path} collides with an honorific`).toBeUndefined();
+      }
       expect(slug, path).toBe(slugify(slug));
       expect(name.trim(), path).not.toBe("");
     }
@@ -77,5 +103,6 @@ describe("GUESTS", () => {
     const lines = guestLinks("https://x.vercel.app");
     expect(lines).toHaveLength(Object.keys(GUESTS).length);
     expect(lines).toContain("Bạn Thịnh\thttps://x.vercel.app/ban/thinh");
+    expect(lines).toContain("Khánh Linh\thttps://x.vercel.app/khanh-linh");
   });
 });
