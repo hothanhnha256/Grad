@@ -93,7 +93,6 @@ export function Invitation({ recipient }: { recipient: Recipient | null }) {
         <footer className="flex flex-col items-center gap-3 px-4 pb-24 pt-4 text-center text-white">
           <Image src="/img/hcmut-logo.webp" alt="" width={240} height={242} className="h-14 w-auto" />
           <p className="font-script text-3xl font-bold">Hẹn gặp {you} ngày 28/11 nhé!</p>
-          <p className="font-serif text-sm text-sky-soft/80">Thiệp mời lễ tốt nghiệp · {EVENT.name} · 2026</p>
         </footer>
       </main>
 

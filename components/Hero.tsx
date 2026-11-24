@@ -43,7 +43,6 @@ export function Hero({ greeting, you, self, calendarUrl, zaloUrl }: Props) {
         <motion.div {...fade(1.2)} className="reveal mt-6">
           <p className="font-serif text-sm text-ink-soft">Lễ tốt nghiệp của</p>
           <p className="font-serif text-[clamp(1.7rem,4.6vw,2.3rem)] font-semibold leading-tight text-navy">{EVENT.name}</p>
-          <p className="mt-1 text-base font-bold text-ink-soft sm:text-lg">Cử nhân Khoa học Máy tính · Niên khóa 2022</p>
           <p className="mt-3 inline-block -rotate-1 rounded-md bg-sun-soft px-3 py-1 font-hand text-xl text-ink">
             <time dateTime={EVENT.start}>{EVENT.dateLabel}</time> · 12:00
           </p>
