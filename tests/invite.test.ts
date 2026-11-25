@@ -4,7 +4,7 @@ import { getCountdown, buildCalendarUrl, buildDirectionsUrl, zaloUrl, telUrl } f
 
 const at = (iso: string) => Date.parse(iso);
 
-describe("getCountdown (two slots: 10:00–12:00 and 17:00–18:00)", () => {
+describe("getCountdown (10:00–12:00)", () => {
   it("counts down to the first slot", () => {
     expect(getCountdown(at("2026-11-27T10:30:15+07:00"))).toEqual({
       state: "before", days: 0, hours: 23, minutes: 29, seconds: 45,
@@ -24,26 +24,17 @@ describe("getCountdown (two slots: 10:00–12:00 and 17:00–18:00)", () => {
     });
   });
 
-  it("counts down to the evening slot between the two slots", () => {
-    expect(getCountdown(at("2026-11-28T14:00:00+07:00"))).toEqual({
-      state: "before", days: 0, hours: 3, minutes: 0, seconds: 0,
-    });
-  });
-
-  it("is 'during' inside the evening slot", () => {
-    expect(getCountdown(at("2026-11-28T17:30:00+07:00")).state).toBe("during");
-  });
-
-  it("is 'after' once the last slot ends and never negative", () => {
-    const c = getCountdown(at("2026-11-28T18:00:01+07:00"));
+  it("is 'after' once 12:00 passes and never negative", () => {
+    const c = getCountdown(at("2026-11-28T12:00:01+07:00"));
     expect(c.state).toBe("after");
     for (const n of [c.days, c.hours, c.minutes, c.seconds]) expect(n).toBe(0);
   });
 });
 
 describe("event time label", () => {
-  it("lists both slots", () => {
-    expect(EVENT.timeLabel).toBe("10:00–12:00 hoặc 17:00–18:00");
+  it("is the single morning slot", () => {
+    expect(EVENT.timeLabel).toBe("10:00–12:00");
+    expect(EVENT.slots).toHaveLength(1);
   });
 });
 
@@ -58,7 +49,8 @@ describe("links", () => {
     const details = u.searchParams.get("details") ?? "";
     expect(details).toContain("giữa tòa A2 và sân bóng đá");
     expect(details).toContain("0386467955");
-    expect(details).toContain("10:00–12:00 hoặc 17:00–18:00");
+    expect(details).toContain("10:00–12:00");
+    expect(details).not.toContain("17:00");
   });
 
   it("builds the directions URL to the school", () => {

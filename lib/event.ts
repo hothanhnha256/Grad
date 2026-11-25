@@ -19,10 +19,9 @@ export const EVENT: EventInfo = {
   shortName: "Nhã",
   slots: [
     { start: "2026-11-28T10:00:00+07:00", end: "2026-11-28T12:00:00+07:00" },
-    { start: "2026-11-28T17:00:00+07:00", end: "2026-11-28T18:00:00+07:00" },
   ],
   dateLabel: "Thứ Bảy, 28/11/2026",
-  timeLabel: "10:00–12:00 hoặc 17:00–18:00",
+  timeLabel: "10:00–12:00",
   venue: "Đại học Bách khoa ĐHQG TP.HCM",
   address: "268 Lý Thường Kiệt, phường Diên Hồng, TP.HCM",
   addressFull: "268 Lý Thường Kiệt, phường Diên Hồng (quận 10 cũ), TP.HCM",
