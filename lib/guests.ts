@@ -11,19 +11,21 @@ export const GUESTS: Record<string, string> = {
   "ban/hieu": "Hiệu",
   "ban/tung": "Tùng",
   "ban/trong": "Trọng",
-  "chi/mai": "Mai",
   "khanh-linh": "Khánh Linh",
+  "hien-huynh": "Hiền Huỳnh",
+  "tan": "Tân",
+  "nhan": "Nhân",
   "anh/bao": "Bảo",
   "anh/kiet": "Kiệt",
   "lam": "Lâm",
   "ban/tho": "Thơ",
-  "do-hung": "Hưng Đỗ",
+  "do-hung": "Hưng",
   "bubu": "BuBu",
   "anh/meo": "Mèo",
   "ai-my": "Ái My",
   "tho-ngoc": "Thỏ Ngọc",
   "king": "King",
-
+  "anh-em-sof-vui-ve": "Anh Em SOF Vui Vẻ"
 };
 
 export function guestLinks(baseUrl: string): string[] {
