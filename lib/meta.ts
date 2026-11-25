@@ -16,6 +16,6 @@ export function recipientMetadata(r: Recipient | null): Metadata {
   if (!r) return {};
   const { greeting, self, you } = greetingFor(r);
   const title = `${greeting} · Thiệp tốt nghiệp ${EVENT.name}`;
-  const description = `${EVENT.dateLabel}, 12:00 tại ${EVENT.venue}. ${capitalize(self)} rất mong được gặp ${you}!`;
+  const description = `${EVENT.dateLabel}, ${EVENT.timeLabel} tại ${EVENT.venue}. ${capitalize(self)} rất mong được gặp ${you}!`;
   return { title, description, openGraph: { title, description, type: "website", locale: "vi_VN", images: [OG_IMAGE] } };
 }

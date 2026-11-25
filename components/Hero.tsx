@@ -44,7 +44,8 @@ export function Hero({ greeting, you, self, calendarUrl, zaloUrl }: Props) {
           <p className="font-serif text-sm text-ink-soft">Lễ tốt nghiệp của</p>
           <p className="font-serif text-[clamp(1.7rem,4.6vw,2.3rem)] font-semibold leading-tight text-navy">{EVENT.name}</p>
           <p className="mt-3 inline-block -rotate-1 rounded-md bg-sun-soft px-3 py-1 font-hand text-xl text-ink">
-            <time dateTime={EVENT.start}>{EVENT.dateLabel}</time> · 12:00
+            <time dateTime={EVENT.slots[0].start}>{EVENT.dateLabel}</time>
+            <span className="block text-lg">{EVENT.timeLabel}</span>
           </p>
         </motion.div>
 

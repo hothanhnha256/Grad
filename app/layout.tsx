@@ -18,7 +18,7 @@ function siteUrl(): string {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   title: `Thiệp mời tốt nghiệp · ${EVENT.name}`,
-  description: `${EVENT.dateLabel}, 12:00 tại ${EVENT.venue}. Nhã rất mong được gặp bạn!`,
+  description: `${EVENT.dateLabel}, ${EVENT.timeLabel} tại ${EVENT.venue}. Nhã rất mong được gặp bạn!`,
   icons: {
     icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>",
   },

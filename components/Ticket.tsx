@@ -22,7 +22,7 @@ export function Ticket({ guest }: { guest: string }) {
           </div>
           <dl className="grid gap-5 p-5 sm:grid-cols-2 sm:p-6">
             <Field label="Ngày" value={EVENT.dateLabel} />
-            <Field label="Giờ" value="12:00" sub="Đón khách 12:00–14:00 (giờ TP.HCM)" />
+            <Field label="Giờ" value="10:00–12:00" sub="hoặc 17:00–18:00 (giờ TP.HCM)" />
             <Field label="Địa điểm" value="ĐH Bách khoa – ĐHQG TP.HCM" sub={EVENT.addressFull} />
             <Field label="Điểm hẹn" value="Giữa tòa A2 và sân bóng đá" sub="Vào cổng 1, đường Lý Thường Kiệt" />
           </dl>

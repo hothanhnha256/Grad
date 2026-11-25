@@ -4,30 +4,46 @@ import { getCountdown, buildCalendarUrl, buildDirectionsUrl, zaloUrl, telUrl } f
 
 const at = (iso: string) => Date.parse(iso);
 
-describe("getCountdown", () => {
-  it("counts down before the event", () => {
+describe("getCountdown (two slots: 10:00–12:00 and 17:00–18:00)", () => {
+  it("counts down to the first slot", () => {
     expect(getCountdown(at("2026-11-27T10:30:15+07:00"))).toEqual({
-      state: "before", days: 1, hours: 1, minutes: 29, seconds: 45,
+      state: "before", days: 0, hours: 23, minutes: 29, seconds: 45,
     });
   });
 
   it("uses the absolute instant, not the viewer's timezone", () => {
-    const c = getCountdown(at("2026-11-28T04:59:59Z"));
+    const c = getCountdown(at("2026-11-28T02:59:59Z"));
     expect(c.state).toBe("before");
     expect(c.seconds).toBe(1);
-    expect(getCountdown(at("2026-11-28T05:00:00Z")).state).toBe("during");
+    expect(getCountdown(at("2026-11-28T03:00:00Z")).state).toBe("during");
   });
 
-  it("is 'during' inside the 12:00–14:00 window with zeroed numbers", () => {
-    expect(getCountdown(at("2026-11-28T13:00:00+07:00"))).toEqual({
+  it("is 'during' inside the morning slot with zeroed numbers", () => {
+    expect(getCountdown(at("2026-11-28T11:00:00+07:00"))).toEqual({
       state: "during", days: 0, hours: 0, minutes: 0, seconds: 0,
     });
   });
 
-  it("is 'after' once the window ends and never negative", () => {
-    const c = getCountdown(at("2026-11-28T14:00:01+07:00"));
+  it("counts down to the evening slot between the two slots", () => {
+    expect(getCountdown(at("2026-11-28T14:00:00+07:00"))).toEqual({
+      state: "before", days: 0, hours: 3, minutes: 0, seconds: 0,
+    });
+  });
+
+  it("is 'during' inside the evening slot", () => {
+    expect(getCountdown(at("2026-11-28T17:30:00+07:00")).state).toBe("during");
+  });
+
+  it("is 'after' once the last slot ends and never negative", () => {
+    const c = getCountdown(at("2026-11-28T18:00:01+07:00"));
     expect(c.state).toBe("after");
     for (const n of [c.days, c.hours, c.minutes, c.seconds]) expect(n).toBe(0);
+  });
+});
+
+describe("event time label", () => {
+  it("lists both slots", () => {
+    expect(EVENT.timeLabel).toBe("10:00–12:00 hoặc 17:00–18:00");
   });
 });
 
@@ -36,12 +52,13 @@ describe("links", () => {
     const u = new URL(buildCalendarUrl(EVENT));
     expect(u.origin + u.pathname).toBe("https://calendar.google.com/calendar/render");
     expect(u.searchParams.get("action")).toBe("TEMPLATE");
-    expect(u.searchParams.get("dates")).toBe("20261128T050000Z/20261128T070000Z");
+    expect(u.searchParams.get("dates")).toBe("20261128T030000Z/20261128T050000Z");
     expect(u.searchParams.get("ctz")).toBe("Asia/Ho_Chi_Minh");
     expect(u.searchParams.get("text")).toBe("Gặp mặt mừng tốt nghiệp cùng Hồ Thanh Nhã");
     const details = u.searchParams.get("details") ?? "";
     expect(details).toContain("giữa tòa A2 và sân bóng đá");
     expect(details).toContain("0386467955");
+    expect(details).toContain("10:00–12:00 hoặc 17:00–18:00");
   });
 
   it("builds the directions URL to the school", () => {

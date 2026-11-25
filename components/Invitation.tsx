@@ -37,7 +37,7 @@ export function Invitation({ recipient }: { recipient: Recipient | null }) {
         <Notebook id="invite">
           <Sparkle className="absolute right-6 top-10 w-8 sm:right-14" />
           <Flower className="absolute left-4 top-12 hidden w-12 sm:left-12 sm:block" delay={0.3} />
-          <SectionTitle title={`Hẹn gặp ${you} lúc 12:00`} sub="Thứ Bảy, 28/11/2026 · tại Bách khoa" />
+          <SectionTitle title={`Hẹn gặp ${you} ngày 28/11`} sub={`Thứ Bảy · ${EVENT.timeLabel} · tại Bách khoa`} />
           <Reveal className="relative mx-auto max-w-2xl">
             <div className="tape absolute -top-3 left-1/2 z-10 h-7 w-32 -translate-x-1/2 -rotate-2" />
             <div className="lined -rotate-[0.6deg] rounded-[6px] bg-white px-6 pb-8 pt-9 shadow-soft sm:px-10">
