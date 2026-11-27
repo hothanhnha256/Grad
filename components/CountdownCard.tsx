@@ -57,7 +57,7 @@ export function CountdownCard({ you, self }: { you: string; self: string }) {
   }
 
   return (
-    <div role="timer" aria-label="Đếm ngược đến 10:00 ngày 28/11/2026" className="flex justify-center gap-3 sm:gap-5">
+    <div role="timer" aria-label="Đếm ngược đến 11:00 ngày 28/11/2026" className="flex justify-center gap-3 sm:gap-5">
       <Tile value={c?.days ?? null} label="ngày" />
       <Tile value={c?.hours ?? null} label="giờ" />
       <Tile value={c?.minutes ?? null} label="phút" />

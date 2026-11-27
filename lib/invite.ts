@@ -25,7 +25,7 @@ export function getCountdown(nowMs: number, event: EventInfo = EVENT): Countdown
   };
 }
 
-/** 2026-11-28T10:00:00+07:00 -> 20261128T030000Z */
+/** 2026-11-28T11:00:00+07:00 -> 20261128T040000Z */
 function toCalendarStamp(iso: string): string {
   return new Date(iso).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
 }

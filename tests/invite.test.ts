@@ -4,22 +4,22 @@ import { getCountdown, buildCalendarUrl, buildDirectionsUrl, zaloUrl, telUrl } f
 
 const at = (iso: string) => Date.parse(iso);
 
-describe("getCountdown (10:00–12:00)", () => {
+describe("getCountdown (11:00–12:00)", () => {
   it("counts down to the first slot", () => {
     expect(getCountdown(at("2026-11-27T10:30:15+07:00"))).toEqual({
-      state: "before", days: 0, hours: 23, minutes: 29, seconds: 45,
+      state: "before", days: 1, hours: 0, minutes: 29, seconds: 45,
     });
   });
 
   it("uses the absolute instant, not the viewer's timezone", () => {
-    const c = getCountdown(at("2026-11-28T02:59:59Z"));
+    const c = getCountdown(at("2026-11-28T03:59:59Z"));
     expect(c.state).toBe("before");
     expect(c.seconds).toBe(1);
-    expect(getCountdown(at("2026-11-28T03:00:00Z")).state).toBe("during");
+    expect(getCountdown(at("2026-11-28T04:00:00Z")).state).toBe("during");
   });
 
   it("is 'during' inside the morning slot with zeroed numbers", () => {
-    expect(getCountdown(at("2026-11-28T11:00:00+07:00"))).toEqual({
+    expect(getCountdown(at("2026-11-28T11:30:00+07:00"))).toEqual({
       state: "during", days: 0, hours: 0, minutes: 0, seconds: 0,
     });
   });
@@ -33,7 +33,7 @@ describe("getCountdown (10:00–12:00)", () => {
 
 describe("event time label", () => {
   it("is the single morning slot", () => {
-    expect(EVENT.timeLabel).toBe("10:00–12:00");
+    expect(EVENT.timeLabel).toBe("11:00–12:00");
     expect(EVENT.slots).toHaveLength(1);
   });
 });
@@ -43,13 +43,13 @@ describe("links", () => {
     const u = new URL(buildCalendarUrl(EVENT));
     expect(u.origin + u.pathname).toBe("https://calendar.google.com/calendar/render");
     expect(u.searchParams.get("action")).toBe("TEMPLATE");
-    expect(u.searchParams.get("dates")).toBe("20261128T030000Z/20261128T050000Z");
+    expect(u.searchParams.get("dates")).toBe("20261128T040000Z/20261128T050000Z");
     expect(u.searchParams.get("ctz")).toBe("Asia/Ho_Chi_Minh");
     expect(u.searchParams.get("text")).toBe("Gặp mặt mừng tốt nghiệp cùng Hồ Thanh Nhã");
     const details = u.searchParams.get("details") ?? "";
     expect(details).toContain("giữa tòa A2 và sân bóng đá");
     expect(details).toContain("0386467955");
-    expect(details).toContain("10:00–12:00");
+    expect(details).toContain("11:00–12:00");
     expect(details).not.toContain("17:00");
   });
 
