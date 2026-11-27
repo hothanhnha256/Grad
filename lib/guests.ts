@@ -29,7 +29,8 @@ export const GUESTS: Record<string, string> = {
   "but": "Bút",
   "bin": "Bin",
   "nguyet": "Nguyệt",
-  "chi/trang-hippo": "Trang Hippo"
+  "chi/trang-hippo": "Trang Hippo",
+  "My": "My",
 };
 
 export function guestLinks(baseUrl: string): string[] {
